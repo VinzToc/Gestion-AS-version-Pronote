@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Gestion AS Pronote</title>
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#008277">
+<link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
+<script>addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.dip=e;dispatchEvent(new Event("dipready"))})</script>
+<link rel="stylesheet" href="style.css?v=5"></head><body>
+<header><div class="hd"><span class="lg"><img src="logo-transparent.png" alt="" onerror="this.onerror=function(){this.style.display='none'};this.src='logo.png'"></span><h1>Gestion AS<small>Association Sportive · version Pronote</small></h1><span id="count"></span></div></header>
+<nav aria-label="Sections">
+<button data-t="t1" class="on">Import / Export</button>
+<button data-t="t2">Cartes d’AS</button>
+<button data-t="t3">Appel AS</button></nav>
+<main>
+<section id="t1">
+<div class="hero wide"><img class="main" src="logo.png" alt="Logo de l’Association Sportive" onerror="this.style.display='none'"><img class="pn" src="logo_pronote.png" alt="Pronote" onerror="this.style.display='none'"></div>
+<div class="panel wide" id="inst" hidden><h2>Installer l’application</h2><p id="instp"></p><button id="instb" hidden>Installer sur cet appareil</button></div>
+<div class="panel"><h2>Importer une classe Pronote ou une sauvegarde.</h2>
+<p>Fichier .csv issu de l’export d’une classe dans Pronote (attention à la structure du fichier !). Importez les classes une à une : la liste de l’établissement est complétée à chaque import et les profils déjà renseignés sont conservés. Une sauvegarde peut aussi être réimportée.</p>
+<input type="file" id="file" accept=".csv,text/csv"></div>
+<div class="panel"><h2>Enregistrer</h2>
+<p>Génère un .csv complet incluant les fiches élèves, la gestion des présences par séance et le total.</p>
+<button class="exp">Sauvegarde</button></div>
+<p id="m1" class="msg wide"></p>
+<div class="panel wide"><h2>Élèves de l’établissement <span id="nl"></span></h2>
+<input id="q" type="search" placeholder="Rechercher un nom ou une classe" aria-label="Rechercher dans la liste">
+<div class="filters g2"><label>Membre de l’AS<select id="gm"><option value="">Tous</option><option value="1">Membres de l’AS</option><option value="0">Non membres</option></select></label>
+<label>Autorisation parentale<select id="ga"><option value="">Toutes</option><option value="1">Validée</option><option value="0">Non validée</option></select></label>
+<label>Compétitions UNSS<select id="gc"><option value="">Toutes</option><option value="1">Participe</option><option value="0">Ne participe pas</option></select></label>
+<label>Activité<select id="gt"></select></label></div>
+<table id="tl"></table></div>
+<div class="panel wide"><h2>Confidentialité</h2>
+<p>Aucune donnée n’est envoyée sur Internet : tout reste dans la mémoire de ce navigateur. Sauvegardez régulièrement et effacez les données en fin d’année (RGPD).</p>
+<button id="wipe" class="danger">Effacer toutes les données</button></div>
+</section>
+<section id="t2" hidden>
+<div class="panel"><h2>Toutes les cartes</h2>
+<button id="gen">Générer les cartes</button>
+<button id="pdf" class="alt" disabled>Télécharger toutes les cartes (PDF)</button></div>
+<div class="panel"><h2>Une seule carte</h2>
+<div class="row"><input id="nm" list="dl" placeholder="Nom de l’élève"><button id="one">Télécharger</button></div></div>
+<p id="m2" class="msg wide"></p>
+<div id="cards" class="wide"></div>
+</section>
+<section id="t3" hidden>
+<div class="panel"><h2>Séance</h2>
+<div class="row"><input type="date" id="date" aria-label="Date de la séance"><button id="scan">Lancer le scan</button><button id="stop" class="alt" hidden>Fin du scan</button></div>
+<div class="row man"><select id="act" aria-label="Activité de la séance"></select></div>
+<div id="cam" hidden><video id="v" playsinline muted></video></div>
+<p id="m3" class="msg"></p>
+<div class="row man"><input id="man" list="dl" placeholder="Ajout manuel (nom)"><button id="add" class="alt">Ajouter</button></div></div>
+<div class="panel"><h2>Elèves présents aujourd'hui <span id="np"></span></h2><ul id="pl"></ul>
+<p>!! Pensez à sauvegarder les données !!</p>
+<button class="exp alt">Enregistrer</button></div>
+<div class="panel"><h2>Consulter les présences <span id="vn"></span></h2>
+<div class="filters"><label>Date de séance<select id="fd"></select></label>
+<label>Activité<select id="fa"></select></label>
+<label>Jour de la semaine<select id="fj"><option value="">Tous</option><option value="1">Lundi</option><option value="2">Mardi</option><option value="3">Mercredi</option><option value="4">Jeudi</option><option value="5">Vendredi</option><option value="6">Samedi</option><option value="0">Dimanche</option></select></label>
+<label>Sexe<select id="fs"><option value="">Tous</option><option value="Filles">Filles</option><option value="Garçons">Garçons</option></select></label></div>
+<p id="vh"></p><ul id="vl"></ul></div>
+<div class="panel stats"><h2>Statistiques des présences</h2><div id="st"></div></div>
+</section>
+<footer class="foot">
+<div><a href="confidentialite.html">Politique de confidentialité</a></div>
+<div><a class="ic" href="contact.html" aria-label="Contact" title="Contact"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 7 8.5 6 8.5-6"/></svg></a><a class="ic" href="http://vinzneuron.free.fr/" target="_blank" rel="noopener noreferrer" aria-label="Site web" title="Site web"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3.2 3 3.2 15 0 18M12 3c-3.2 3-3.2 15 0 18"/></svg></a><a class="ic" href="https://www.instagram.com/vinzneuron/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg></a><a class="ic" href="https://www.youtube.com/@vinz_neuron" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="2" y="5" width="20" height="14" rx="4.5"/><path d="M10 9.2v5.6l5-2.8z" fill="currentColor"/></svg></a></div>
+<p>Gestion AS · Vincent TOCQUIN – « VinZ Neuron »</p>
+</footer>
+<p class="ver">Version Pronote 5 · données stockées uniquement sur cet appareil</p>
+</main>
+<dialog id="fiche"><form method="dialog">
+<h2 id="fh"></h2><p id="fi"></p>
+<div class="two"><label class="fld">Sexe<input type="text" id="fsexe" readonly title="Donnée Pronote, non modifiable"></label><label class="fld">Classe<input type="text" id="fcls" autocomplete="off"><small id="fclsn"></small></label></div>
+<label class="fld">Régime<input type="text" id="freg" readonly title="Donnée Pronote, non modifiable"></label>
+<label class="chk"><input type="checkbox" id="fins" autofocus> Inscrit à l’AS et licencié UNSS</label>
+<label class="fld">N° de licence UNSS<input type="text" id="flic" autocomplete="off" placeholder="Numéro de la licence officielle"></label>
+<div class="fld">Activités pratiquées<details class="ms" id="facd"><summary id="fsum"></summary><div class="opts" id="fac"></div></details></div>
+<label class="chk"><input type="checkbox" id="fcomp"> Participe aux compétitions UNSS</label>
+<label class="chk"><input type="checkbox" id="fhandi"> Sport partagé / Handisport</label>
+<label class="chk"><input type="checkbox" id="fautor"> Autorisation parentale validée</label>
+<div class="fbtn"><button id="fcancel" class="alt" type="button">Annuler</button><button id="fsave">Enregistrer la fiche</button></div>
+</form></dialog>
+<datalist id="dl"></datalist>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js" crossorigin="anonymous"></script>
+<script src="app.js?v=5"></script>
+</body></html>
